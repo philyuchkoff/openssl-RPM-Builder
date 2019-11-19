@@ -1,5 +1,6 @@
 # Сборка RPM OpenSSL версии 1.1.1d (для CentOS 7)
 
+![version](https://github.com/philyuchkoff/openssl-1.1.1d-RPM-Builder/blob/master/version.png)
 
 ## Установка:
 
