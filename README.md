@@ -4,8 +4,6 @@
 ## Установка:
 
     sudo yum groupinstall 'Development Tools'
-
-    cd /opt
     git clone https://github.com/philyuchkoff/openssl-1.1.1d-RPM-Builder.git
     cd openssl-1.1.1d-RPM-Builder/
     chmod +x install-openssl_1.1.1d.sh 
@@ -16,6 +14,10 @@
 Собранный RPM будет лежать в 
 
     /opt/openssl-1.1.1d-RPM-Builder/rpmbuild/RPMS/x86_64
+    
+После того, как install-openssl_1.1.1d.sh отработает, попробуйте установить собранный пакет:
+
+    rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1d-1.el7.centos.x86_64.rpm
     
 ## Проверка
 
