@@ -17,7 +17,7 @@
     
 После того, как install-openssl_1.1.1d.sh отработает, попробуйте установить собранный пакет:
 
-    rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1d-1.el7.centos.x86_64.rpm
+    rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1d-1.el7.x86_64.rpm --nodeps
     
 ## Проверка
 
