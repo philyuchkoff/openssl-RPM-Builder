@@ -6,15 +6,15 @@
     sudo yum groupinstall 'Development Tools'
 
     cd /opt
-    git clone https://github.com/philyuchkoff/openssl-1.1.1d-RPM-Builder.git
-    cd openssl-1.1.1d-RPM-Builder/
+    git clone https://github.com/philyuchkoff/openssl-1.1.1c-RPM-Builder.git
+    cd openssl-1.1.1c-RPM-Builder/
     git checkout master
 
     make
     
 Собранный RPM будет лежать в 
 
-    /opt/openssl-1.1.1d-RPM-Builder/rpmbuild/RPMS/x86_64
+    /opt/openssl-1.1.1c-RPM-Builder/rpmbuild/RPMS/x86_64
     
 ## Проверка
 
