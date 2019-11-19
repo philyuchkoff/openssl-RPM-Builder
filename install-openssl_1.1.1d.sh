@@ -14,6 +14,8 @@ yum -y install \
     perl-WWW-Curl \
     rpm-build
 
+yum -y remove openssl
+
 # Get openssl tarball
 curl -O --silent https://www.openssl.org/source/openssl-1.1.1d.tar.gz
 
@@ -69,6 +71,9 @@ ln -sf %{openssldir}/bin/openssl %{buildroot}%{_bindir}
 %files
 %{openssldir}
 %defattr(-,root,root)
+/usr/bin/openssl
+/usr/lib64/libcrypto.so.1.1
+/usr/lib64/libssl.so.1.1
 
 %files devel
 %{openssldir}/include/*
@@ -89,7 +94,8 @@ cd /root/rpmbuild/SPECS && \
     -D "version 1.1.1d" \
     -ba openssl.spec
 
-# Try to install:  rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1c-1.el7.centos.x86_64.rpm
+
+# Try to install:  rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1d-1.el7.centos.x86_64.rpm
 # I need --nodeps ??? Something is wrong
 
 # Verify install:  rpm -qa openssl
