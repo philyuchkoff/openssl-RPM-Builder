@@ -11,6 +11,8 @@
     chmod +x install-openssl_1.1.1d.sh 
     ./install-openssl_1.1.1d.sh
     
+Собирается ООООООООООООЧЧЧЧЧЧЕЕЕЕЕЕЕЕЕЕЕНННННННННННЬЬЬЬЬЬЬЬЬЬ долго!!!
+
 Собранный RPM будет лежать в 
 
     /opt/openssl-1.1.1d-RPM-Builder/rpmbuild/RPMS/x86_64
