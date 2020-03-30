@@ -1,6 +1,6 @@
-Summary: OpenSSL 1.1.1d for Centos
+Summary: OpenSSL 1.1.1e for Centos
 Name: openssl
-Version: %{?version}%{!?version:1.1.1d}
+Version: %{?version}%{!?version:1.1.1e}
 Release: 1%{?dist}
 Obsoletes: %{name} <= %{version}
 Provides: %{name} = %{version}
