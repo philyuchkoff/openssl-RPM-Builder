@@ -95,8 +95,7 @@ cd /root/rpmbuild/SPECS && \
     -ba openssl.spec
 
 
-# Try to install:  rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1e-1.el7.centos.x86_64.rpm
-# I need --nodeps ??? Something is wrong
+# Try to install:  rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1e-1.el7.x86_64.rpm --nodeps
 
 # Verify install:  rpm -qa openssl
 
