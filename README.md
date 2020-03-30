@@ -1,4 +1,4 @@
-# Сборка RPM OpenSSL версии 1.1.1d (для CentOS 7)
+# Сборка RPM OpenSSL версии 1.1.1e (для CentOS 7)
 
 ## Установка:
 
