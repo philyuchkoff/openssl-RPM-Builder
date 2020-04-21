@@ -18,7 +18,7 @@
 
     /opt/openssl-1.1.1g-RPM-Builder/rpmbuild/RPMS/x86_64
     
-После того, как install-openssl_1.1.1g.sh отработает, попробуйте установить собранный пакет:
+После того, как `install-openssl_1.1.1g.sh` отработает, попробуйте установить собранный пакет:
 
     rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1g-1.el7.x86_64.rpm --nodeps
     
