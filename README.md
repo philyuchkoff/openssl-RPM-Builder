@@ -1,7 +1,6 @@
 # Сборка RPM OpenSSL версии 1.1.1g (для CentOS 7)
 
-![enter image description here](https://findicons.com/files/icons/998/airicons/24/error2.png)
-[OpenSSL Security Advisory \[21 April 2020\]](https://www.openssl.org/news/secadv/20200421.txt)
+:exclamation::exclamation::exclamation: [OpenSSL Security Advisory \[21 April 2020\]](https://www.openssl.org/news/secadv/20200421.txt)
 **Version 1.1.1g NOT affected!**
 
 ## Установка:
