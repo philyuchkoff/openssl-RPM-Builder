@@ -3,7 +3,7 @@
 :exclamation::exclamation::exclamation: [OpenSSL Security Advisory \[21 April 2020\]](https://www.openssl.org/news/secadv/20200421.txt)
 **Version 1.1.1g NOT affected!**
 
-## Install:
+## Build:
 
     sudo yum groupinstall 'Development Tools'
     git clone https://github.com/philyuchkoff/openssl-1.1.1g-RPM-Builder.git
