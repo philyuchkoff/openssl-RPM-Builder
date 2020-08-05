@@ -1,9 +1,9 @@
-# Сборка RPM OpenSSL версии 1.1.1g (для CentOS 7)
+# Build RPM OpenSSL version 1.1.1g (for CentOS 7)
 
 :exclamation::exclamation::exclamation: [OpenSSL Security Advisory \[21 April 2020\]](https://www.openssl.org/news/secadv/20200421.txt)
 **Version 1.1.1g NOT affected!**
 
-## Установка:
+## Install:
 
     sudo yum groupinstall 'Development Tools'
     git clone https://github.com/philyuchkoff/openssl-1.1.1g-RPM-Builder.git
@@ -11,31 +11,25 @@
     chmod +x install-openssl_1.1.1g.sh 
     ./install-openssl_1.1.1g.sh
     
-Собирается ООООООООООООЧЧЧЧЧЧЕЕЕЕЕЕЕЕЕЕЕНННННННННННЬЬЬЬЬЬЬЬЬЬ долго!!!
-
-Собранный RPM будет лежать в 
+Builded RPM will be in
 
     /root/rpmbuild/RPMS/x86_64/
     
-После того, как `install-openssl_1.1.1g.sh` отработает, попробуйте установить собранный пакет:
+After `install-openssl_1.1.1g.sh` will finish, you can install builded rpm:
 
     rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1g-1.el7.x86_64.rpm --nodeps
     
-## Проверка
-
-После установки пакета можно проверить:
+## Check:
 
     openssl version
     
-должно ответить так:
+should be:
 
     OpenSSL 1.1.1g  21 Apr 2020
-    
-### Готовые rpm лежат в /RPM
+   
+## I will gladly accept all comments
 
-## С удовольствием приму все замечания
-
-Если вам пригодилась эта штука - можно в качестве благодарности купить мне кофе! :) Но это совершенно не обязательно!
+If you find this thing useful, you can buy me coffee as a thank you! :) But this is not necessary at all!
 
 <a href="https://www.buymeacoffee.com/philyuchkoff" target="_blank"><img src="http://public.jc21.com/github/by-me-a-coffee.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
 
