@@ -1,8 +1,9 @@
 # Build RPM OpenSSL version 1.1.1g (for CentOS 7)
 
-:exclamation::exclamation::exclamation: [OpenSSL Security Advisory \[21 April 2020\]](https://www.openssl.org/news/secadv/20200421.txt)
+:exclamation::exclamation::exclamation: [OpenSSL Security Advisory \[21 April 2020\](https://www.openssl.org/news/secadv/20200421.txt)
 **Version 1.1.1g NOT affected!**
 
+## [OpenSSL](https://www.openssl.org/)
 ## Build:
 
 ```bash
