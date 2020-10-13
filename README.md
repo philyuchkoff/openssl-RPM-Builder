@@ -1,4 +1,5 @@
 # Build RPM OpenSSL version 1.1.1h (2020-Sep-22) for CentOS 7
+![GitHub last commit](https://img.shields.io/github/last-commit/philyuchkoff/openssl-RPM-Builder?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/philyuchkoff/openssl-RPM-Builder/total?style=for-the-badge)
 
 ## [OpenSSL](https://www.openssl.org/)
