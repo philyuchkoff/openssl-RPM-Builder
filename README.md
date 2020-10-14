@@ -28,7 +28,7 @@ rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1h-1.el7.x86_64.rpm --nodeps
 
 should be:
 
-    OpenSSL 1.1.1h  2020-Sep-22
+    OpenSSL 1.1.1h  22 Sep 2020
    
 ## I will gladly accept all comments
 
