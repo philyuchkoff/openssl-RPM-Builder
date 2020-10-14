@@ -12,8 +12,7 @@ yum -y install \
     gcc \
     perl \
     perl-WWW-Curl \
-    rpm-build \
-    libssl-dev
+    rpm-build
 
 yum -y remove openssl
 
@@ -99,11 +98,3 @@ cd /root/rpmbuild/SPECS && \
 # For install:  rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1h-1.el7.x86_64.rpm --nodeps
 # Verify install:  rpm -qa openssl
 #                  openssl version
-
-
-#rpmbuild \
-#    -D "dist ${dist}" \
-#    -D "version ${buildver}" \
-#    -D "release ${releasever}" \
-#    -D "_topdir /rpmbuild" \
-#    -ba rpm/pgbouncer.spec
