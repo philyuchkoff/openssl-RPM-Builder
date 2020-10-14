@@ -12,7 +12,8 @@ yum -y install \
     gcc \
     perl \
     perl-WWW-Curl \
-    rpm-build
+    rpm-build \
+    libssl-dev
 
 yum -y remove openssl
 
