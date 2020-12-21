@@ -28,7 +28,7 @@ rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1i-1.el7.x86_64.rpm --nodeps
     OpenSSL 1.1.1i  8 Dec 2020
 or
 
-    rpm -qa openssl
+    $rpm -qa openssl
     openssl-1.1.1i-1.el7.x86_64
    
 #### If you find this thing useful, you can buy me coffee as a thank you! :) 
