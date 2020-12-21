@@ -1,4 +1,4 @@
-# Build RPM OpenSSL version 1.1.1h (2020-Sep-22) for CentOS 7
+# Build RPM OpenSSL version 1.1.1i (08-Dec-2020) for CentOS 7
 ![GitHub last commit](https://img.shields.io/github/last-commit/philyuchkoff/openssl-RPM-Builder?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/philyuchkoff/openssl-RPM-Builder/total?style=for-the-badge)
 
@@ -7,20 +7,20 @@
 
 ```bash
 sudo yum groupinstall 'Development Tools'
-git clone https://github.com/philyuchkoff/openssl-1.1.1h-RPM-Builder.git
-cd openssl-1.1.1h-RPM-Builder/
-chmod +x install-openssl_1.1.1h.sh 
-./install-openssl_1.1.1h.sh
+git clone https://github.com/philyuchkoff/openssl-1.1.1i-RPM-Builder.git
+cd openssl-1.1.1i-RPM-Builder/
+chmod +x install-openssl_1.1.1i.sh 
+./install-openssl_1.1.1i.sh
  ```
     
 Builded RPM will be in
 
     /root/rpmbuild/RPMS/x86_64/
     
-After `install-openssl_1.1.1h.sh` will finish, you can install builded rpm:
+After `install-openssl_1.1.1i.sh` will finish, you can install builded rpm:
 
 ```bash
-rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1h-1.el7.x86_64.rpm --nodeps
+rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1i-1.el7.x86_64.rpm --nodeps
  ```   
 ## Check:
 
