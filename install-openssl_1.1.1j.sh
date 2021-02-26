@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Падаем сразу, если возникли какие-то ошибки
+# 2021-02-26 openssl-1.1.1j
 set -e
-# Выводим, то , что делаем
+# hello world
 set -v
 mkdir ~/openssl && cd ~/openssl
 yum -y install \
@@ -17,13 +17,13 @@ yum -y install \
 yum -y remove openssl
 
 # Get openssl tarball
-curl -O --silent https://www.openssl.org/source/openssl-1.1.1i.tar.gz
+curl -O --silent https://www.openssl.org/source/openssl-1.1.1j.tar.gz
 
 # SPEC file
 cat << 'EOF' > ~/openssl/openssl.spec
-Summary: OpenSSL 1.1.1i for Centos
+Summary: OpenSSL 1.1.1j for Centos by wanjie
 Name: openssl
-Version: %{?version}%{!?version:1.1.1h}
+Version: %{?version}%{!?version:1.1.1j}
 Release: 1%{?dist}
 Obsoletes: %{name} <= %{version}
 Provides: %{name} = %{version}
@@ -37,8 +37,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 %global openssldir /usr/openssl
 
 %description
-https://github.com/philyuchkoff/openssl-1.1.1i-RPM-Builder
-OpenSSL RPM for version 1.1.1i on Centos
+https://github.com/philyuchkoff/openssl-1.1.1j-RPM-Builder
+OpenSSL RPM for version 1.1.1j on Centos
 
 %package devel
 Summary: Development files for programs which will use the openssl library
@@ -46,7 +46,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-OpenSSL RPM for version 1.1.1i on Centos (development package)
+OpenSSL RPM for version 1.1.1j on Centos (development package)
 
 %prep
 %setup -q
@@ -88,13 +88,13 @@ EOF
 mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 cp ~/openssl/openssl.spec /root/rpmbuild/SPECS/openssl.spec
 
-mv openssl-1.1.1i.tar.gz /root/rpmbuild/SOURCES
+mv openssl-1.1.1j.tar.gz /root/rpmbuild/SOURCES
 cd /root/rpmbuild/SPECS && \
     rpmbuild \
-    -D "version 1.1.1i" \
+    -D "version 1.1.1j" \
     -ba openssl.spec
 
 
-# For install:  rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1i-1.el7.x86_64.rpm --nodeps
+# For install:  rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1j-1.el7.x86_64.rpm --nodeps
 # Verify install:  rpm -qa openssl
 #                  openssl version
