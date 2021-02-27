@@ -10,7 +10,7 @@ sudo yum groupinstall 'Development Tools'
 git clone https://github.com/philyuchkoff/openssl-RPM-Builder
 cd openssl-RPM-Builder
 chmod +x install-openssl_1.1.1.sh 
-./install-openssl_1.1.1.sh
+sudo ./install-openssl_1.1.1.sh
  ```
     
 Builded RPM will be in
