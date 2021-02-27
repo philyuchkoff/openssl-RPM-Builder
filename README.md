@@ -20,7 +20,7 @@ Builded RPM will be in
 After `install-openssl_1.1.1j.sh` will finish, you can install builded rpm:
 
 ```bash
-rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1j-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1j-1.el7.x86_64.rpm --nodeps
  ```   
 ## Check:
 
