@@ -8,7 +8,7 @@
 ```bash
 sudo yum groupinstall 'Development Tools'
 git clone https://github.com/philyuchkoff/openssl-RPM-Builder
-cd openssl-1.1.1j-RPM-Builder/
+cd openssl-1.1.1-RPM-Builder/
 chmod +x install-openssl_1.1.1j.sh 
 ./install-openssl_1.1.1j.sh
  ```
