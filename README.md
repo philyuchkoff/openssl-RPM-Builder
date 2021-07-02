@@ -5,7 +5,8 @@
 ## [OpenSSL](https://www.openssl.org/)
 
 ## Remove old versions
-````rpm -qa | grep openssl
+````
+rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
 
