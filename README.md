@@ -3,6 +3,12 @@
 ![GitHub All Releases](https://img.shields.io/github/downloads/philyuchkoff/openssl-RPM-Builder/total?style=for-the-badge)
 
 ## [OpenSSL](https://www.openssl.org/)
+
+## Remove old versions
+````rpm -qa | grep openssl
+rpm -e --justdb --nodeps <yourpackage>
+````
+
 ## Build:
 
 ```bash
