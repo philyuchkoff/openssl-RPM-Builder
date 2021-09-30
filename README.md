@@ -4,6 +4,9 @@
 
 ## [OpenSSL](https://www.openssl.org/)
 
+- [openssl-3.0.0-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-1.1.1l-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+
 ## Remove old versions
 ````
 rpm -qa | grep openssl
