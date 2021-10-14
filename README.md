@@ -22,7 +22,16 @@ cd openssl-RPM-Builder
 chmod +x install-openssl_1.1.1.sh 
 sudo ./install-openssl_1.1.1.sh
  ```
-    
+
+For OpenSSL 3:
+```bash
+sudo yum -y groupinstall 'Development Tools'
+git clone https://github.com/philyuchkoff/openssl-RPM-Builder
+cd openssl-RPM-Builder
+chmod +x install-openssl_3.sh 
+sudo ./install-openssl_3.sh
+ ```
+ 
 Builded RPM will be in
 
     /root/rpmbuild/RPMS/x86_64/
