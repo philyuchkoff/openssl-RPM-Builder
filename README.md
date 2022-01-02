@@ -4,14 +4,16 @@
 
 ## [OpenSSL](https://www.openssl.org/)
 
-- [openssl-3.0.0-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
-- [openssl-1.1.1l-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-3.0.1-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-1.1.1m-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
 
 ## Remove old versions
 ````
 rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
+
+# OpenSSL 1.1.1m:
 
 ## Build:
 
@@ -22,15 +24,6 @@ cd openssl-RPM-Builder
 chmod +x install-openssl_1.1.1.sh 
 sudo ./install-openssl_1.1.1.sh
  ```
-
-For OpenSSL 3:
-```bash
-sudo yum -y groupinstall 'Development Tools'
-git clone https://github.com/philyuchkoff/openssl-RPM-Builder
-cd openssl-RPM-Builder
-chmod +x install-openssl_3.sh 
-sudo ./install-openssl_3.sh
- ```
  
 Builded RPM will be in
 
@@ -39,14 +32,30 @@ Builded RPM will be in
 After `install-openssl_1.1.1.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1l-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1m-1.el7.x86_64.rpm --nodeps
  ```   
+
 ## Check:
 
     $openssl version
-    OpenSSL 1.1.1l  24 Aug 2021
+    OpenSSL 1.1.1m  14 Dec 2021
 or
 
     $rpm -qa openssl
-    openssl-1.1.1l-1.el7.x86_64
+    openssl-1.1.1m-1.el7.x86_64
   
+# OpenSSL 3:
+
+## Build:
+
+```bash
+sudo yum -y groupinstall 'Development Tools'
+git clone https://github.com/philyuchkoff/openssl-RPM-Builder
+cd openssl-RPM-Builder
+chmod +x install-openssl_3.sh 
+sudo ./install-openssl_3.sh
+ ```
+ 
+ Builded RPM will be in
+
+    /root/rpmbuild/RPMS/x86_64/
