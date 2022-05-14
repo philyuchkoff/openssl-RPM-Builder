@@ -1,6 +1,6 @@
-Summary: OpenSSL 1.1.1n for CentOS
+Summary: OpenSSL 1.1.1o for CentOS
 Name: openssl
-Version: %{?version}%{!?version:1.1.1n}
+Version: %{?version}%{!?version:1.1.1o}
 Release: 1%{?dist}
 Obsoletes: %{name} <= %{version}
 Provides: %{name} = %{version}
@@ -15,7 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 https://github.com/philyuchkoff/openssl-RPM-Builder
-OpenSSL RPM for version 1.1.1n on CentOS
+OpenSSL RPM for version 1.1.1o on CentOS
 
 %package devel
 Summary: Development files for programs which will use the openssl library
@@ -23,7 +23,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-OpenSSL RPM for version 1.1.1n on CentOS (development package)
+OpenSSL RPM for version 1.1.1o on CentOS (development package)
 
 %prep
 %setup -q
