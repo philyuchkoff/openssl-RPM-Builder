@@ -4,8 +4,8 @@
 
 ## [OpenSSL](https://www.openssl.org/)
 
-- [openssl-3.0.3-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
-- [openssl-1.1.1o-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-3.0.4-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-1.1.1p-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
 
 ## Remove old versions
 ````
@@ -13,7 +13,7 @@ rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
 
-# OpenSSL 1.1.1o:
+# OpenSSL 1.1.1p:
 
 ## Build:
 
@@ -32,17 +32,17 @@ Builded RPM will be in
 After `install-openssl_1.1.1.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1o-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1p-1.el7.x86_64.rpm --nodeps
  ```   
 
 ## Check:
 
     $openssl version
-    OpenSSL 1.1.1o  03 May 2022
+    OpenSSL 1.1.1p  21 Jun 2022
 or
 
     $rpm -qa openssl
-    openssl-1.1.1o-1.el7.x86_64
+    openssl-1.1.1p-1.el7.x86_64
   
 # OpenSSL 3:
 
