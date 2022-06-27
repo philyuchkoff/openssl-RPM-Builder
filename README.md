@@ -44,7 +44,7 @@ or
     $rpm -qa openssl
     openssl-1.1.1p-1.el7.x86_64
   
-# OpenSSL 3:
+# OpenSSL 3.0.4:
 
 ## Build:
 
