@@ -59,8 +59,3 @@ sudo ./install-openssl_3.sh
  Builded RPM will be in
 
     /root/rpmbuild/RPMS/x86_64/
-
-# Thanks to supporters!
-[![Stargazers repo roster for @philyuchkoff/openssl-RPM-Builder](https://reporoster.com/stars/philyuchkoff/openssl-RPM-Builder)](https://github.com/philyuchkoff/openssl-RPM-Builder/stargazers)
-
-[![Forkers repo roster for @philyuchkoff/openssl-RPM-Builder](https://reporoster.com/forks/philyuchkoff/openssl-RPM-Builder)](https://github.com/philyuchkoff/openssl-RPM-Builder/network/members)
