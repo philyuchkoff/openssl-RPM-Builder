@@ -48,6 +48,9 @@ ln -sf %{openssldir}/bin/openssl %{buildroot}%{_bindir}
 %files
 %{openssldir}
 %defattr(-,root,root)
+/usr/bin/openssl
+/usr/lib64/libcrypto.so.1.1
+/usr/lib64/libssl.so.1.1
 
 %files devel
 %{openssldir}/include/*
