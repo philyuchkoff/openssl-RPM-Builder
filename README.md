@@ -59,3 +59,9 @@ sudo ./install-openssl_3.sh
  Builded RPM will be in
 
     /root/rpmbuild/RPMS/x86_64/
+    
+After `install-openssl_3.sh` will finish, you can install builded rpm:
+
+```bash
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.0.7-1.el7.x86_64.rpm --nodeps
+ ```  
