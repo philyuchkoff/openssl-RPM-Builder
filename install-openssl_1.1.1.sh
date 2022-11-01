@@ -46,7 +46,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-OpenSSL RPM for version 1.1.1q on Centos (development package)
+OpenSSL RPM for version 1.1.1s on Centos (development package)
 
 %prep
 %setup -q
@@ -88,10 +88,10 @@ EOF
 mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 cp ~/openssl/openssl.spec /root/rpmbuild/SPECS/openssl.spec
 
-mv openssl-1.1.1q.tar.gz /root/rpmbuild/SOURCES
+mv openssl-1.1.1s.tar.gz /root/rpmbuild/SOURCES
 cd /root/rpmbuild/SPECS && \
     rpmbuild \
-    -D "version 1.1.1q" \
+    -D "version 1.1.1s" \
     -ba openssl.spec
 
 
