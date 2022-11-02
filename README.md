@@ -1,6 +1,10 @@
 # OpenSSL rpm builder for CentOS 7 - build latest OpenSSL binary
+
 ![GitHub last commit](https://img.shields.io/github/last-commit/philyuchkoff/openssl-RPM-Builder?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/philyuchkoff/openssl-RPM-Builder/total?style=for-the-badge)
+
+### [CVE-2022-3602](https://www.openssl.org/news/secadv/20221101.txt) The vulnerability is present in products using OpenSSL 3.0.0-3.0.6. Products that use OpenSSL 1.0.2 or 1.1.1 are not affected.
+### [2022 OpenSSL vulnerability](https://github.com/NCSC-NL/OpenSSL-2022) - this repo contains operational information regarding the recently announced vulnerability in OpenSSL 3.
 
 ## [OpenSSL](https://www.openssl.org/)
 
