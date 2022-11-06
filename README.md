@@ -6,6 +6,7 @@
 ### [CVE-2022-3602](https://www.openssl.org/news/secadv/20221101.txt) The vulnerability is present in products using OpenSSL 3.0.0-3.0.6. Products that use OpenSSL 1.0.2 or 1.1.1 are not affected.
 ### [2022 OpenSSL vulnerability](https://github.com/NCSC-NL/OpenSSL-2022) - this repo contains operational information regarding the recently announced vulnerability in OpenSSL 3.
 ### cve-2022-3602 , cve-2022-3786 - [OpenSSL PoC](https://github.com/rbowes-r7/cve-2022-3602-and-cve-2022-3786-openssl-poc)
+### [OpenSSL Security Advisory 01 November 2022](https://www.openssl.org/news/secadv/20221101.txt)
 
 ## [OpenSSL](https://www.openssl.org/)
 
