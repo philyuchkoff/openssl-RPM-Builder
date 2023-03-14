@@ -5,7 +5,7 @@
 
 ## [OpenSSL](https://www.openssl.org/)
 
-- [openssl-3.0.8-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-3.1.0-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
 - [openssl-1.1.1t-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
 
 ## Remove old versions
@@ -45,7 +45,7 @@ or
     $rpm -qa openssl
     openssl-1.1.1t-1.el7.x86_64
   
-# OpenSSL 3.0.8:
+# OpenSSL 3.1.0:
 
 ## Build:
 
@@ -64,5 +64,5 @@ sudo ./install-openssl_3.sh
 After `install-openssl_3.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.0.8-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.1.0-1.el7.x86_64.rpm --nodeps
  ```  
