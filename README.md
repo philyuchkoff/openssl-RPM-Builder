@@ -8,6 +8,8 @@
 - [openssl-3.1.0-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
 - [openssl-1.1.1t-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
 
+[OpenSSL 1.1.1 End of Life](https://www.openssl.org/blog/blog/2023/03/28/1.1.1-EOL/)
+
 ## Remove old versions
 ````
 rpm -qa | grep openssl
