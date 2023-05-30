@@ -5,8 +5,8 @@
 
 ## [OpenSSL](https://www.openssl.org/)
 
-- [openssl-3.1.0-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
-- [openssl-1.1.1t-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-3.1.1-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
+- [openssl-1.1.1u-1.el7.x86_64.rpm](https://github.com/philyuchkoff/openssl-RPM-Builder/releases)
 
 [OpenSSL 1.1.1 End of Life](https://www.openssl.org/blog/blog/2023/03/28/1.1.1-EOL/)
 
@@ -35,17 +35,17 @@ Builded RPM will be in
 After `install-openssl_1.1.1.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1t-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1u-1.el7.x86_64.rpm --nodeps
  ```   
 
 ## Check:
 
     $openssl version
-    OpenSSL 1.1.1t  07 Feb 2023
+    OpenSSL 1.1.1u  07 Feb 2023
 or
 
     $rpm -qa openssl
-    openssl-1.1.1t-1.el7.x86_64
+    openssl-1.1.1u-1.el7.x86_64
   
 # OpenSSL 3.1.0:
 
@@ -66,5 +66,5 @@ sudo ./install-openssl_3.sh
 After `install-openssl_3.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.1.0-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.1.1-1.el7.x86_64.rpm --nodeps
  ```  
