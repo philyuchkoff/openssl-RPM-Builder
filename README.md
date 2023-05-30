@@ -16,7 +16,7 @@ rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
 
-# OpenSSL 1.1.1t:
+# OpenSSL 1.1.1u:
 
 ## Build:
 
@@ -41,13 +41,13 @@ sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1u-1.el7.x86_64.rpm --node
 ## Check:
 
     $openssl version
-    OpenSSL 1.1.1u  07 Feb 2023
+    OpenSSL 1.1.1u  30 May 2023
 or
 
     $rpm -qa openssl
     openssl-1.1.1u-1.el7.x86_64
   
-# OpenSSL 3.1.0:
+# OpenSSL 3.1.1:
 
 ## Build:
 
