@@ -16,7 +16,7 @@ rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
 
-# OpenSSL 1.1.1u:
+# OpenSSL 1.1.1v:
 
 ## Build:
 
