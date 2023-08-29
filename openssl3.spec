@@ -38,8 +38,8 @@ make
 
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_libdir}
-ln -sf %{openssldir}/lib/libssl.so.1.1 %{buildroot}%{_libdir}
-ln -sf %{openssldir}/lib/libcrypto.so.1.1 %{buildroot}%{_libdir}
+ln -sf %{openssldir}/lib64/libssl.so.3 %{buildroot}%{_libdir}
+ln -sf %{openssldir}/lib64/libcrypto.so.3 %{buildroot}%{_libdir}
 ln -sf %{openssldir}/bin/openssl %{buildroot}%{_bindir}
 
 %clean
@@ -49,8 +49,8 @@ ln -sf %{openssldir}/bin/openssl %{buildroot}%{_bindir}
 %{openssldir}
 %defattr(-,root,root)
 /usr/bin/openssl
-/usr/lib64/libcrypto.so.1.1
-/usr/lib64/libssl.so.1.1
+/usr/lib64/libcrypto.so.3
+/usr/lib64/libssl.so.3
 
 %files devel
 %{openssldir}/include/*
