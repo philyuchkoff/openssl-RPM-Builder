@@ -38,7 +38,7 @@ sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-1.1.1w-1.el7.x86_64.rpm --node
 ## Check:
 
     $openssl version
-    OpenSSL 1.1.1w  19 Sep 2023
+    OpenSSL 1.1.1w  11 Sep 2023
 or
 
     $rpm -qa openssl
