@@ -17,13 +17,13 @@ yum -y install \
 yum -y remove openssl
 
 # Get openssl tarball
-curl -O --silent https://www.openssl.org/source/openssl-1.1.1v.tar.gz
+curl -O --silent https://www.openssl.org/source/openssl-1.1.1w.tar.gz
 
 # SPEC file
 cat << 'EOF' > ~/openssl/openssl.spec
-Summary: OpenSSL 1.1.1v for Centos
+Summary: OpenSSL 1.1.1w for Centos
 Name: openssl
-Version: %{?version}%{!?version:1.1.1v}
+Version: %{?version}%{!?version:1.1.1w}
 Release: 1%{?dist}
 Obsoletes: %{name} <= %{version}
 Provides: %{name} = %{version}
@@ -38,7 +38,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 https://github.com/philyuchkoff/openssl-RPM-Builder
-OpenSSL RPM for version 1.1.1v on Centos
+OpenSSL RPM for version 1.1.1w on Centos
 
 %package devel
 Summary: Development files for programs which will use the openssl library
@@ -46,7 +46,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-OpenSSL RPM for version 1.1.1v on Centos (development package)
+OpenSSL RPM for version 1.1.1w on Centos (development package)
 
 %prep
 %setup -q
@@ -88,10 +88,10 @@ EOF
 mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 cp ~/openssl/openssl.spec /root/rpmbuild/SPECS/openssl.spec
 
-mv openssl-1.1.1v.tar.gz /root/rpmbuild/SOURCES
+mv openssl-1.1.1w.tar.gz /root/rpmbuild/SOURCES
 cd /root/rpmbuild/SPECS && \
     rpmbuild \
-    -D "version 1.1.1v" \
+    -D "version 1.1.1w" \
     -ba openssl.spec
 
 
