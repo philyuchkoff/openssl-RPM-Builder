@@ -18,13 +18,13 @@ yum -y install \
 yum -y remove openssl
 
 # Get openssl tarball
-curl -O --silent https://www.openssl.org/source/openssl-3.1.3.tar.gz
+curl -O --silent https://www.openssl.org/source/openssl-3.1.4.tar.gz
 
 # SPEC file
 cat << 'EOF' > ~/openssl/openssl3.spec
-Summary: OpenSSL 3.1.3 for Centos
+Summary: OpenSSL 3.1.4 for Centos
 Name: openssl
-Version: %{?version}%{!?version:3.1.3}
+Version: %{?version}%{!?version:3.1.4}
 Release: 1%{?dist}
 Obsoletes: %{name} <= %{version}
 Provides: %{name} = %{version}
@@ -39,7 +39,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 https://github.com/philyuchkoff/openssl-RPM-Builder
-OpenSSL RPM for version 3.1.3 on CentOS
+OpenSSL RPM for version 3.1.4 on CentOS
 
 %package devel
 Summary: Development files for programs which will use the openssl library
@@ -47,7 +47,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-OpenSSL RPM for version 3.1.3 on CentOS (development package)
+OpenSSL RPM for version 3.1.4 on CentOS (development package)
 
 %prep
 %setup -q
