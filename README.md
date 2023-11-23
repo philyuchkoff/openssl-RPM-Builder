@@ -44,7 +44,7 @@ or
     $rpm -qa openssl
     openssl-1.1.1w-1.el7.x86_64
   
-# OpenSSL 3.1.4:
+# OpenSSL 3.2.0:
 
 ## Build:
 
@@ -63,5 +63,5 @@ sudo ./install-openssl_3.sh
 After `install-openssl_3.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.1.4-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.2.0-1.el7.x86_64.rpm --nodeps
  ```  
