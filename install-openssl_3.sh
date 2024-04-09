@@ -92,5 +92,5 @@ cp ~/openssl/openssl3.spec /root/rpmbuild/SPECS/openssl.spec
 mv openssl-3.3.0.tar.gz /root/rpmbuild/SOURCES
 cd /root/rpmbuild/SPECS && \
     rpmbuild \
-    -D "version 3.2.1" \
+    -D "version 3.3.0" \
     -ba openssl.spec
