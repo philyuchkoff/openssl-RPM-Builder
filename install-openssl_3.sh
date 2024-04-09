@@ -18,7 +18,7 @@ yum -y install \
 yum -y remove openssl
 
 # Get openssl tarball
-curl -O --silent https://www.openssl.org/source/openssl-3.30.tar.gz
+curl -O --silent https://www.openssl.org/source/openssl-3.3.0.tar.gz
 
 # SPEC file
 cat << 'EOF' > ~/openssl/openssl3.spec
