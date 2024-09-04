@@ -13,12 +13,14 @@ yum -y install \
     perl \
     perl-WWW-Curl \
     rpm-build \
-    perl-IPC-Cmd
+    perl-IPC-Cmd \
+    wget
 
 yum -y remove openssl
 
 # Get openssl tarball
-curl -O --silent https://www.openssl.org/source/openssl-3.3.1.tar.gz
+# curl -O --silent https://www.openssl.org/source/openssl-3.3.1.tar.gz
+wget https://www.openssl.org/source/openssl-3.3.1.tar.gz
 
 # SPEC file
 cat << 'EOF' > ~/openssl/openssl3.spec
