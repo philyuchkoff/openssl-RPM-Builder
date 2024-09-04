@@ -1,13 +1,13 @@
-Summary: OpenSSL 3.3.2 for CentOS
+Summary: OpenSSL 3.3.1 for CentOS
 Name: openssl
-Version: %{?version}%{!?version:3.3.2}
+Version: %{?version}%{!?version:3.3.1}
 Release: 1%{?dist}
 Obsoletes: %{name} <= %{version}
 Provides: %{name} = %{version}
 URL: https://www.openssl.org/
 License: GPLv2+
 
-Source: https://github.com/openssl/openssl/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
+Source: https://www.openssl.org/source/%{name}-%{version}.tar.gz
 
 BuildRequires: make gcc perl perl-WWW-Curl
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -15,7 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 https://github.com/philyuchkoff/openssl-RPM-Builder
-OpenSSL RPM for version 3.3.2 on CentOS
+OpenSSL RPM for version 3.3.1 on CentOS
 
 %package devel
 Summary: Development files for programs which will use the openssl library
@@ -23,7 +23,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-OpenSSL RPM for version 3.3.2 on CentOS (development package)
+OpenSSL RPM for version 3.3.1 on CentOS (development package)
 
 %prep
 %setup -q
