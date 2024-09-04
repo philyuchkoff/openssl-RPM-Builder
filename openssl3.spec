@@ -7,7 +7,7 @@ Provides: %{name} = %{version}
 URL: https://www.openssl.org/
 License: GPLv2+
 
-Source: https://www.openssl.org/source/%{name}-%{version}.tar.gz
+Source: https://github.com/openssl/openssl/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires: make gcc perl perl-WWW-Curl
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
