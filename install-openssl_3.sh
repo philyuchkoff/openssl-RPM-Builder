@@ -19,14 +19,14 @@ yum -y install \
 yum -y remove openssl
 
 # Get openssl tarball
-# curl -O --silent https://www.openssl.org/source/openssl-3.3.1.tar.gz
-wget https://www.openssl.org/source/openssl-3.3.1.tar.gz
+# curl -O --silent https://www.openssl.org/source/openssl-3.4.0.tar.gz
+wget https://www.openssl.org/source/openssl-3.4.0.tar.gz
 
 # SPEC file
 cat << 'EOF' > ~/openssl/openssl3.spec
-Summary: OpenSSL 3.3.1 for Centos
+Summary: OpenSSL 3.4.0 for Centos
 Name: openssl
-Version: %{?version}%{!?version:3.3.1}
+Version: %{?version}%{!?version:3.4.0}
 Release: 1%{?dist}
 Obsoletes: %{name} <= %{version}
 Provides: %{name} = %{version}
@@ -41,7 +41,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 https://github.com/philyuchkoff/openssl-RPM-Builder
-OpenSSL RPM for version 3.3.1 on CentOS
+OpenSSL RPM for version 3.4.0 on CentOS
 
 %package devel
 Summary: Development files for programs which will use the openssl library
@@ -49,7 +49,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-OpenSSL RPM for version 3.3.1 on CentOS (development package)
+OpenSSL RPM for version 3.4.0 on CentOS (development package)
 
 %prep
 %setup -q
@@ -91,8 +91,8 @@ EOF
 mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 cp ~/openssl/openssl3.spec /root/rpmbuild/SPECS/openssl.spec
 
-mv openssl-3.3.1.tar.gz /root/rpmbuild/SOURCES
+mv openssl-3.4.0.tar.gz /root/rpmbuild/SOURCES
 cd /root/rpmbuild/SPECS && \
     rpmbuild \
-    -D "version 3.3.1" \
+    -D "version 3.4.0" \
     -ba openssl.spec
