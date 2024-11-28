@@ -5,15 +5,36 @@
 
 ## [OpenSSL official site](https://www.openssl.org/)
 
-[OpenSSL 1.1.1 End of Life](https://www.openssl.org/blog/blog/2023/03/28/1.1.1-EOL/)
-
 ## Remove old versions
 ````
 rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
+  
+# OpenSSL 3.4.0:
+
+## Build:
+
+```bash
+sudo yum -y groupinstall 'Development Tools'
+git clone https://github.com/philyuchkoff/openssl-RPM-Builder
+cd openssl-RPM-Builder
+chmod +x install-openssl_3.sh 
+sudo ./install-openssl_3.sh
+ ```
+ 
+ Builded RPM will be in
+
+    /root/rpmbuild/RPMS/x86_64/
+    
+After `install-openssl_3.sh` will finish, you can install builded rpm:
+
+```bash
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.4.0-1.el7.x86_64.rpm --nodeps
+ ```
 
 # OpenSSL 1.1.1w:
+[OpenSSL 1.1.1 End of Life](https://www.openssl.org/blog/blog/2023/03/28/1.1.1-EOL/)
 
 ## Build:
 
@@ -43,25 +64,3 @@ or
 
     $rpm -qa openssl
     openssl-1.1.1w-1.el7.x86_64
-  
-# OpenSSL 3.4.0:
-
-## Build:
-
-```bash
-sudo yum -y groupinstall 'Development Tools'
-git clone https://github.com/philyuchkoff/openssl-RPM-Builder
-cd openssl-RPM-Builder
-chmod +x install-openssl_3.sh 
-sudo ./install-openssl_3.sh
- ```
- 
- Builded RPM will be in
-
-    /root/rpmbuild/RPMS/x86_64/
-    
-After `install-openssl_3.sh` will finish, you can install builded rpm:
-
-```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.4.0-1.el7.x86_64.rpm --nodeps
- ```  
