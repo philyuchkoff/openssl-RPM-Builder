@@ -1,4 +1,4 @@
-# OpenSSL rpm builder for CentOS 7 - build latest OpenSSL binary
+# OpenSSL rpm builder for CentOS 8/9 - build latest OpenSSL binary
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/philyuchkoff/openssl-RPM-Builder?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/philyuchkoff/openssl-RPM-Builder/total?style=for-the-badge)
