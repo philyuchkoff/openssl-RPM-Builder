@@ -1,98 +1,87 @@
 #!/bin/bash
+set -euo pipefail
 
-# Падаем сразу, если возникли какие-то ошибки
-set -e
-# Выводим, то , что делаем
-set -v
-mkdir ~/openssl && cd ~/openssl
-yum -y install \
+VERSION="3.5.0"
+BUILD_ROOT="/root/rpmbuild"
+
+# Установка зависимостей
+echo "Installing dependencies..."
+dnf -y install \
     curl \
-    which \
     make \
     gcc \
     perl \
-    perl-WWW-Curl \
-    rpm-build \
     perl-IPC-Cmd \
-    wget
+    rpm-build \
+    perl-FindBin \
+    perl-Text-Template \
+    perl-Test-Simple \
+    zlib-devel \
+    ca-certificates \
+    perl-libwww-perl
 
-yum -y remove openssl
+# Удаление ненужных зависимостей
+dnf -y remove openssl || true
 
-# Get openssl tarball
-# curl -O --silent https://www.openssl.org/source/openssl-3.5.0.tar.gz
-wget https://www.openssl.org/source/openssl-3.5.0.tar.gz
+# Подготовка окружения
+mkdir -p "${BUILD_ROOT}"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
-# SPEC file
-cat << 'EOF' > ~/openssl/openssl3.spec
-Summary: OpenSSL 3.5.0 for Centos
+# Загрузка исходников
+curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz" \
+    -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz"
+
+# Создание SPEC-файла
+cat << 'EOF' > "${BUILD_ROOT}/SPECS/openssl.spec"
+Summary: OpenSSL %{version} for CentOS/RHEL
 Name: openssl
 Version: %{?version}%{!?version:3.5.0}
 Release: 1%{?dist}
-Obsoletes: %{name} <= %{version}
-Provides: %{name} = %{version}
+Obsoletes: openssl < %{version}
+Conflicts: openssl < %{version}
+Provides: openssl = %{version}-%{release}
 URL: https://www.openssl.org/
-License: GPLv2+
+License: Apache-2.0
 
-Source: https://www.openssl.org/source/%{name}-%{version}.tar.gz
+%define debug_package %{nil}
+Source0: openssl-%{version}.tar.gz
 
-BuildRequires: make gcc perl perl-WWW-Curl
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-%global openssldir /usr/openssl
+# Зависимости
+BuildRequires: make gcc perl perl-IPC-Cmd zlib-devel perl-libwww-perl
+Requires: perl-libwww-perl
 
 %description
-https://github.com/philyuchkoff/openssl-RPM-Builder
-OpenSSL RPM for version 3.5.0 on CentOS
-
-%package devel
-Summary: Development files for programs which will use the openssl library
-Group: Development/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description devel
-OpenSSL RPM for version 3.5.0 on CentOS (development package)
+OpenSSL RPM for version %{version} on CentOS/RHEL
 
 %prep
 %setup -q
 
 %build
-./config --prefix=%{openssldir} --openssldir=%{openssldir}
-make
+./config --prefix=/usr/openssl --openssldir=/usr/openssl zlib
+make -j$(nproc)
 
 %install
-[ "%{buildroot}" != "/" ] && %{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 %make_install
 
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_libdir}
-ln -sf %{openssldir}/lib64/libssl.so.3 %{buildroot}%{_libdir}
-ln -sf %{openssldir}/lib64/libcrypto.so.3 %{buildroot}%{_libdir}
-ln -sf %{openssldir}/bin/openssl %{buildroot}%{_bindir}
-
-%clean
-[ "%{buildroot}" != "/" ] && %{__rm} -rf %{buildroot}
+install -d %{buildroot}/usr/bin
+install -d %{buildroot}/usr/lib64
+ln -sf ../openssl/bin/openssl %{buildroot}/usr/bin/openssl
+ln -sf ../openssl/lib64/libssl.so.3 %{buildroot}/usr/lib64/libssl.so.3
+ln -sf ../openssl/lib64/libcrypto.so.3 %{buildroot}/usr/lib64/libcrypto.so.3
 
 %files
-%{openssldir}
-%defattr(-,root,root)
 /usr/bin/openssl
-/usr/lib64/libcrypto.so.3
 /usr/lib64/libssl.so.3
-
-%files devel
-%{openssldir}/include/*
-%defattr(-,root,root)
+/usr/lib64/libcrypto.so.3
+/usr/openssl
 
 %post -p /sbin/ldconfig
-
 %postun -p /sbin/ldconfig
 EOF
 
+# Сборка RPM
+cd "${BUILD_ROOT}/SPECS"
+rpmbuild -ba --define "version ${VERSION}" openssl.spec
 
-mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-cp ~/openssl/openssl3.spec /root/rpmbuild/SPECS/openssl.spec
-
-mv openssl-3.5.0.tar.gz /root/rpmbuild/SOURCES
-cd /root/rpmbuild/SPECS && \
-    rpmbuild \
-    -D "version 3.5.0" \
-    -ba openssl.spec
+echo "Build completed! RPM packages:"
+find "${BUILD_ROOT}/RPMS" -name "*.rpm"
