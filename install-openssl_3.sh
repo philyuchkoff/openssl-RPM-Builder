@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="3.5.0"
+VERSION="3.5.1"
 BUILD_ROOT="/root/rpmbuild"
 
 # Установка зависимостей
@@ -34,7 +34,7 @@ curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz" \
 cat << 'EOF' > "${BUILD_ROOT}/SPECS/openssl.spec"
 Summary: OpenSSL %{version} for CentOS/RHEL
 Name: openssl
-Version: %{?version}%{!?version:3.5.0}
+Version: %{?version}%{!?version:3.5.1}
 Release: 1%{?dist}
 Obsoletes: openssl < %{version}
 Conflicts: openssl < %{version}
