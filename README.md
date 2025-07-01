@@ -11,7 +11,7 @@ rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
   
-# [OpenSSL 3.5.1](https://github.com/openssl/openssl/releases/tag/openssl-3.5.1):
+# OpenSSL 3.5.1 [release page](https://github.com/openssl/openssl/releases/tag/openssl-3.5.1):
 
 ## Build:
 
