@@ -11,7 +11,7 @@ rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
   
-# OpenSSL 3.5.4 [release page](https://github.com/openssl/openssl/releases/tag/openssl-3.5.4):
+# OpenSSL 3.6.0 [release page](https://github.com/openssl/openssl/releases/tag/openssl-3.6.0):
 
 ## Build:
 
@@ -30,7 +30,7 @@ sudo ./install-openssl_3.sh
 After `install-openssl_3.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.5.4-1.el7.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.6.0-1.el9.x86_64.rpm --nodeps
  ```
 
 # OpenSSL 1.1.1w:
