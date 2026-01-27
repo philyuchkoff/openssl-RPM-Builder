@@ -64,3 +64,7 @@ or
 
     $rpm -qa openssl
     openssl-1.1.1w-1.el7.x86_64
+
+## For fun
+
+[![Star History Chart](https://api.star-history.com/svg?repos=philyuchkoff/openssl-RPM-Builder&type=date&legend=top-left)](https://www.star-history.com/#philyuchkoff/openssl-RPM-Builder&type=date&legend=top-left)
