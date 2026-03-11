@@ -1,0 +1,4 @@
+# Bats configuration
+--jobs
+--no-parallelize-across-files
+--no-tempdir-cleanup
