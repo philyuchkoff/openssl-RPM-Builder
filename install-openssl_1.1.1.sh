@@ -1,9 +1,5 @@
 #!/bin/bash
-
-# Падаем сразу, если возникли какие-то ошибки
-set -e
-# Выводим, то , что делаем
-set -v
+set -euo pipefail
 mkdir ~/openssl && cd ~/openssl
 yum -y install \
     curl \
@@ -17,7 +13,22 @@ yum -y install \
 yum -y remove openssl
 
 # Get openssl tarball
+echo "Downloading OpenSSL 1.1.1w source..."
 curl -O --silent https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+
+# Download SHA256 checksum
+echo "Downloading SHA256 checksum..."
+curl -O --silent https://www.openssl.org/source/openssl-1.1.1w.tar.gz.sha256
+
+# Verify checksum
+echo "Verifying SHA256 checksum..."
+sha256sum -c openssl-1.1.1w.tar.gz.sha256
+if [ $? -ne 0 ]; then
+    echo "ERROR: SHA256 checksum verification failed!"
+    echo "The downloaded file may be corrupted or tampered with."
+    exit 1
+fi
+echo "Checksum verification successful!"
 
 # SPEC file
 cat << 'EOF' > ~/openssl/openssl.spec
@@ -89,6 +100,7 @@ mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 cp ~/openssl/openssl.spec /root/rpmbuild/SPECS/openssl.spec
 
 mv openssl-1.1.1w.tar.gz /root/rpmbuild/SOURCES
+mv openssl-1.1.1w.tar.gz.sha256 /root/rpmbuild/SOURCES
 cd /root/rpmbuild/SPECS && \
     rpmbuild \
     -D "version 1.1.1w" \

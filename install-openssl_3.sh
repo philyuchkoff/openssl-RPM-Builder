@@ -27,8 +27,25 @@ dnf -y remove openssl || true
 mkdir -p "${BUILD_ROOT}"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
 # Загрузка исходников
+echo "Downloading OpenSSL ${VERSION} source..."
 curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz" \
     -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz"
+
+# Загрузка файла с контрольной суммой
+echo "Downloading SHA256 checksum..."
+curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz.sha256" \
+    -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz.sha256"
+
+# Проверка контрольной суммы
+echo "Verifying SHA256 checksum..."
+cd "${BUILD_ROOT}/SOURCES"
+sha256sum -c openssl-${VERSION}.tar.gz.sha256
+if [ $? -ne 0 ]; then
+    echo "ERROR: SHA256 checksum verification failed!"
+    echo "The downloaded file may be corrupted or tampered with."
+    exit 1
+fi
+echo "Checksum verification successful!"
 
 # Создание SPEC-файла
 cat << 'EOF' > "${BUILD_ROOT}/SPECS/openssl.spec"
