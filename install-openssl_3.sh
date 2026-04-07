@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="3.6.1"
+VERSION="3.6.2"
 BUILD_ROOT="/root/rpmbuild"
 
 # Установка зависимостей
@@ -51,7 +51,7 @@ echo "Checksum verification successful!"
 cat << 'EOF' > "${BUILD_ROOT}/SPECS/openssl.spec"
 Summary: OpenSSL %{version} for CentOS/RHEL
 Name: openssl
-Version: %{?version}%{!?version:3.6.1}
+Version: %{?version}%{!?version:3.6.2}
 Release: 1%{?dist}
 Obsoletes: openssl < %{version}
 Conflicts: openssl < %{version}
