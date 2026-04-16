@@ -30,12 +30,11 @@ sudo ./install-openssl_4.sh
 After `install-openssl_4.sh` will finish, you can install builded rpm:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-4.0.0-1.el9.x86_64.rpm --nodeps
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-4.0.0-1.el9.x86_64.rpm
  ```
 ### === OpenSSL 4.0.0 Installation Notes ===
 
 ✅ System OpenSSL was preserved (required by sudo, pam, etc.)
-
 ✅ OpenSSL 4.0.0 installed in parallel to `/usr/openssl4`
 
 To use OpenSSL 4.0.0:

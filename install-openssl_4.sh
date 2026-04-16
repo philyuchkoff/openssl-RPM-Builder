@@ -114,6 +114,9 @@ License: Apache-2.0
 # Provides: openssl = %{version}-%{release}
 
 %define debug_package %{nil}
+# Отключаем автоматическую генерацию Perl-зависимостей для runtime, чтобы ставилось без --nodeps
+# Это безопасно, так как OpenSSL работает без Perl
+%global __requires_exclude ^perl\\(.*\\)$
 Source0: openssl-%{version}.tar.gz
 
 # Зависимости сборки
