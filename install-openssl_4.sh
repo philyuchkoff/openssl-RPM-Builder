@@ -3,6 +3,7 @@ set -euo pipefail
 
 # OpenSSL 4.0.0 - официальный релиз от 14 апреля 2026
 # OpenSSL 4.0.0 - official release from April 14, 2026
+# https://github.com/openssl/openssl/releases/tag/openssl-4.0.0
 VERSION="4.0.0"
 BUILD_ROOT="/root/rpmbuild"
 
