@@ -10,7 +10,48 @@
 rpm -qa | grep openssl
 rpm -e --justdb --nodeps <yourpackage>
 ````
-  
+
+# OpenSSL 4.0.0 [release page](https://github.com/openssl/openssl/releases/tag/openssl-4.0.0):
+
+## Build:
+
+```bash
+sudo yum -y groupinstall 'Development Tools'
+git clone https://github.com/philyuchkoff/openssl-RPM-Builder
+cd openssl-RPM-Builder
+chmod +x install-openssl_4.sh 
+sudo ./install-openssl_4.sh
+ ```
+ 
+ Builded RPM will be in
+
+    /root/rpmbuild/RPMS/x86_64/
+    
+After `install-openssl_4.sh` will finish, you can install builded rpm:
+
+```bash
+sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-4.0.0-1.el9.x86_64.rpm --nodeps
+ ```
+### === OpenSSL 4.0.0 Installation Notes ===
+
+✅ System OpenSSL was preserved (required by sudo, pam, etc.)
+✅ OpenSSL 4.0.0 installed in parallel to `/usr/openssl4`
+
+To use OpenSSL 4.0.0:
+```bash
+  /usr/bin/openssl4 version
+```
+
+To compile against OpenSSL 4.0.0:
+```bash
+  gcc -I/usr/openssl4/include -L/usr/openssl4/lib64 program.c -lssl -lcrypto
+```
+
+To check library paths:
+```bash
+  ldconfig -p | grep libssl
+```
+
 # OpenSSL 3.6.2 [release page](https://github.com/openssl/openssl/releases/tag/openssl-3.6.2):
 
 ## Build:
