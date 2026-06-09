@@ -107,12 +107,6 @@ Release: 1%{?dist}
 URL: https://www.openssl.org/
 License: Apache-2.0
 
-# НЕ конфликтуем с системным OpenSSL
-# DO NOT conflict with system OpenSSL
-# Obsoletes: openssl < %{version}
-# Conflicts: openssl < %{version}
-# Provides: openssl = %{version}-%{release}
-
 %define debug_package %{nil}
 # Отключаем автоматическую генерацию Perl-зависимостей для runtime, чтобы ставилось без --nodeps
 # Это безопасно, так как OpenSSL работает без Perl

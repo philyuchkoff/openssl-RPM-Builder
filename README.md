@@ -34,8 +34,8 @@ sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-4.0.1-1.el9.x86_64.rpm
  ```
 ### === OpenSSL 4.0.1 Installation Notes ===
 
-✅ System OpenSSL was preserved (required by sudo, pam, etc.)
-✅ OpenSSL 4.0.1 installed in parallel to `/usr/openssl4`
+- System OpenSSL was preserved (required by sudo, pam, etc.)
+- OpenSSL 4.0.1 installed in parallel to `/usr/openssl4`
 
 To use OpenSSL 4.0.1:
 ```bash
