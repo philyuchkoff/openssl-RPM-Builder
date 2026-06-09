@@ -15,6 +15,16 @@ install:
 		exit 1
 	fi
 
+# Install OpenSSL 4.x
+install-4:
+	@echo "Installing OpenSSL 4.x..."
+	@if [ -f install-openssl_4.sh ]; then
+		sudo ./install-openssl_4.sh
+	else
+		echo "Error: install-openssl_4.sh not found"
+		exit 1
+	fi
+
 # Install OpenSSL 1.1.1
 install-1.1.1:
 	@echo "Installing OpenSSL 1.1.1..."
@@ -56,6 +66,7 @@ clean-tests:
 help:
 	@echo "Available targets:"
 	@echo "  install       - Install OpenSSL 3.x"
+	@echo "  install-4     - Install OpenSSL 4.x"
 	@echo "  install-1.1.1- Install OpenSSL 1.1.1"
 	@echo "  test         - Run all tests"
 	@echo "  test-setup   - Install test dependencies"

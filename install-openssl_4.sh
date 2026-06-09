@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-# OpenSSL 4.0.0 - официальный релиз от 14 апреля 2026
-# OpenSSL 4.0.0 - official release from April 14, 2026
-# https://github.com/openssl/openssl/releases/tag/openssl-4.0.0
-VERSION="4.0.0"
+# OpenSSL 4.0.1 - security patch release от 9 июня 2026
+# OpenSSL 4.0.1 - security patch release from June 9, 2026
+# https://github.com/openssl/openssl/releases/tag/openssl-4.0.1
+VERSION="4.0.1"
 BUILD_ROOT="/root/rpmbuild"
 
 # Установка зависимостей
@@ -33,8 +33,8 @@ echo "System OpenSSL will be kept to maintain system dependencies"
 # Prepare build environment
 mkdir -p "${BUILD_ROOT}"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
-# Загрузка исходников OpenSSL 4.0.0
-# Download OpenSSL 4.0.0 source code
+# Загрузка исходников OpenSSL 4.0.1
+# Download OpenSSL 4.0.1 source code
 echo "Downloading OpenSSL ${VERSION} source..."
 
 # Пробуем разные источники загрузки
@@ -97,12 +97,12 @@ else
     echo "Warning: No SHA256 file found, skipping verification"
 fi
 
-# Создание SPEC-файла для OpenSSL 4.0.0 (параллельная установка)
-# Create SPEC file for OpenSSL 4.0.0 (parallel installation)
+# Создание SPEC-файла для OpenSSL 4.0.1 (параллельная установка)
+# Create SPEC file for OpenSSL 4.0.1 (parallel installation)
 cat << 'EOF' > "${BUILD_ROOT}/SPECS/openssl4.spec"
 Summary: OpenSSL %{version} for CentOS/RHEL (parallel installation)
 Name: openssl4
-Version: %{?version}%{!?version:4.0.0}
+Version: %{?version}%{!?version:4.0.1}
 Release: 1%{?dist}
 URL: https://www.openssl.org/
 License: Apache-2.0
@@ -131,8 +131,8 @@ This package installs alongside the system OpenSSL and does not replace it.
 %setup -q -n openssl-%{version}
 
 %build
-# OpenSSL 4.0.0 использует стандартную систему сборки
-# OpenSSL 4.0.0 uses standard build system
+# OpenSSL 4.0.1 использует стандартную систему сборки
+# OpenSSL 4.0.1 uses standard build system
 ./config \
     --prefix=/usr/openssl4 \
     --openssldir=/usr/openssl4 \
@@ -185,21 +185,21 @@ echo "Build completed! RPM packages:"
 find "${BUILD_ROOT}/RPMS" -name "*.rpm"
 
 echo ""
-echo "=== OpenSSL 4.0.0 Installation Notes ==="
+echo "=== OpenSSL 4.0.1 Installation Notes ==="
 echo ""
 echo "✅ System OpenSSL was preserved (required by sudo, pam, etc.)"
-echo "✅ OpenSSL 4.0.0 installed in parallel to /usr/openssl4"
-echo ""
-echo "To use OpenSSL 4.0.0:"
+echo "✅ OpenSSL 4.0.1 installed in parallel to /usr/openssl4"
+
+echo "To use OpenSSL 4.0.1:"
 echo "  /usr/bin/openssl4 version"
-echo ""
-echo "To compile against OpenSSL 4.0.0:"
+
+echo "To compile against OpenSSL 4.0.1:"
 echo "  gcc -I/usr/openssl4/include -L/usr/openssl4/lib64 program.c -lssl -lcrypto"
 echo ""
 echo "To check library paths:"
 echo "  ldconfig -p | grep libssl"
 echo ""
-echo "=== Major changes in OpenSSL 4.0.0 ==="
+echo "=== Major changes in OpenSSL 4.x series (4.0.0 / 4.0.1) ==="
 echo "- Encrypted Client Hello (ECH) support (RFC 9849)"
 echo "- Post-quantum cryptography algorithms"
 echo "- ENGINE API removed (use providers instead)"
