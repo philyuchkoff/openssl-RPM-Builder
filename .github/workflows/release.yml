@@ -34,7 +34,7 @@ jobs:
       - name: Установка инструментов | Install tools
         run: |
           dnf -y install epel-release
-          dnf -y install git jq curl rpm-build make gcc gcc-c++ perl perl-IPC-Cmd perl-FindBin perl-Text-Template perl-Test-Simple zlib-devel ca-certificates perl-libwww-perl
+          dnf -y install git jq curl rpm-build make gcc gcc-c++ perl perl-IPC-Cmd perl-Text-Template perl-Test-Simple zlib-devel ca-certificates perl-libwww-perl
 
       - name: Определение версии OpenSSL | Detect OpenSSL version
         id: detect
