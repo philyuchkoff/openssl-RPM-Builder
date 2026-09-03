@@ -197,9 +197,10 @@ jobs:
           SPECEOF
 
           # Сборка RPM
-          cd "${BUILD_ROOT}/SPECS"
-          rpmbuild -ba --define "version ${VERSION}" openssl4.spec
-          cd -
+          rpmbuild -ba \
+            --define "_topdir ${BUILD_ROOT}" \
+            --define "version ${VERSION}" \
+            "${BUILD_ROOT}/SPECS/openssl4.spec"
 
           # Копирование RPM в distr
           find "${BUILD_ROOT}/RPMS" -name "*.rpm" -exec cp {} "${DISTR_DIR}/" \;
