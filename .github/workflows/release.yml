@@ -1,0 +1,285 @@
+name: Build OpenSSL 4.x RPM and create release
+
+on:
+  schedule:
+    # Каждый день в 04:00 UTC проверка новых релизов OpenSSL
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Версия OpenSSL (например, 4.0.1). Пусто = latest release'
+        required: false
+        default: ''
+        type: string
+      force:
+        description: 'Пересобрать и загрузить, даже если релиз уже существует'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: openssl-rpm-release
+  cancel-in-progress: false
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    container:
+      image: almalinux:8
+
+    steps:
+      - name: Установка инструментов | Install tools
+        run: |
+          dnf -y install epel-release
+          dnf -y install git jq curl rpm-build make gcc gcc-c++ perl perl-IPC-Cmd perl-FindBin perl-Text-Template perl-Test-Simple zlib-devel ca-certificates perl-libwww-perl
+
+      - name: Определение версии OpenSSL | Detect OpenSSL version
+        id: detect
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version || '' }}
+          INPUT_FORCE: ${{ github.event.inputs.force || 'false' }}
+        run: |
+          set -euo pipefail
+
+          # Открываем доступ к GitHub Releases API
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="$INPUT_VERSION"
+            echo "Ручная сборка версии: $VERSION (Manual build)"
+          else
+            VERSION=$(curl -fsSL https://api.github.com/repos/openssl/openssl/releases/latest \
+              | jq -r '.tag_name' | sed 's/^openssl-//')
+            CURRENT=$(curl -fsSL https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest \
+              | jq -r '.tag_name' | sed 's/^openssl-//' || true)
+            if [ -z "$CURRENT" ] || [ "$CURRENT" = "null" ]; then
+              CURRENT=""
+            fi
+            echo "Latest OpenSSL release: $VERSION"
+            echo "Current release in this repo: ${CURRENT:-none}"
+          fi
+
+          if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
+            echo "Не удалось определить версию OpenSSL (Could not determine version)" >&2
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          if [ -n "$INPUT_VERSION" ] || [ "$INPUT_FORCE" = "true" ]; then
+            SHOULD_BUILD=true
+          elif [ -z "$CURRENT" ] || [ "$VERSION" != "$CURRENT" ]; then
+            SHOULD_BUILD=true
+          else
+            SHOULD_BUILD=false
+          fi
+          echo "should_build=$SHOULD_BUILD" >> "$GITHUB_OUTPUT"
+
+      - name: Пропуск сборки (версия уже собрана) | Nothing to build
+        if: steps.detect.outputs.should_build == 'false'
+        run: |
+          echo "OpenSSL ${{ steps.detect.outputs.version }} уже собрана и выложена в releases. Пропускаем."
+          echo "OpenSSL ${{ steps.detect.outputs.version }} is already released. Skipping."
+
+      - name: Сборка RPM пакетов | Build OpenSSL RPM
+        if: steps.detect.outputs.should_build == 'true'
+        env:
+          VERSION: ${{ steps.detect.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          BUILD_ROOT="/tmp/rpmbuild"
+          DISTR_DIR="/distr"
+          mkdir -p "$BUILD_ROOT"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+          mkdir -p "$DISTR_DIR"
+
+          echo "Сборка OpenSSL ${VERSION}..."
+          echo "Building OpenSSL ${VERSION}..."
+
+          # Загрузка исходников
+          DOWNLOAD_SUCCESS=0
+
+          if curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz" \
+            -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz"; then
+            echo "Загружено с openssl.org"
+            curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz.sha256" \
+              -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz.sha256" || true
+            DOWNLOAD_SUCCESS=1
+          fi
+
+          if [ $DOWNLOAD_SUCCESS -eq 0 ]; then
+            echo "Пробуем GitHub releases..."
+            if curl -sSfL "https://github.com/openssl/openssl/releases/download/openssl-${VERSION}/openssl-${VERSION}.tar.gz" \
+              -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz"; then
+              echo "Загружено с GitHub"
+              DOWNLOAD_SUCCESS=1
+            fi
+          fi
+
+          if [ $DOWNLOAD_SUCCESS -eq 0 ]; then
+            echo "Пробуем old directory..."
+            if curl -sSfL "https://www.openssl.org/source/old/${VERSION}/openssl-${VERSION}.tar.gz" \
+              -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz"; then
+              echo "Загружено из old directory"
+              DOWNLOAD_SUCCESS=1
+            fi
+          fi
+
+          if [ $DOWNLOAD_SUCCESS -eq 0 ]; then
+            echo "ОШИБКА: не удалось загрузить OpenSSL ${VERSION}" >&2
+            exit 1
+          fi
+
+          # Проверка SHA256
+          if [ -f "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz.sha256" ]; then
+            cd "${BUILD_ROOT}/SOURCES"
+            sha256sum -c "openssl-${VERSION}.tar.gz.sha256"
+            cd -
+            echo "SHA256 checksum OK"
+          fi
+
+          # Создание SPEC-файла
+          cat << SPECEOF > "${BUILD_ROOT}/SPECS/openssl4.spec"
+          Summary: OpenSSL %{version} for CentOS/RHEL (parallel installation)
+          Name: openssl4
+          Version: %{?version}%{!?version:${VERSION}}
+          Release: 1%{?dist}
+          URL: https://www.openssl.org/
+          License: Apache-2.0
+
+          %define debug_package %{nil}
+          %global __requires_exclude ^perl\\(.*\\)$
+
+          Source0: openssl-%{version}.tar.gz
+          BuildRequires: make gcc gcc-c++ perl perl-IPC-Cmd zlib-devel perl-libwww-perl
+
+          %description
+          OpenSSL RPM for version %{version} (4.x series) on CentOS/RHEL
+          This package installs alongside the system OpenSSL and does not replace it.
+
+          %prep
+          %setup -q -n openssl-%{version}
+
+          %build
+          ./config \
+              --prefix=/usr/openssl4 \
+              --openssldir=/usr/openssl4 \
+              --libdir=lib64 \
+              zlib \
+              enable-tls1_3 \
+              enable-ec_nistp_64_gcc_128 \
+              no-weak-ssl-ciphers \
+              no-ssl3 \
+              no-ssl3-method \
+              shared
+          make -j\$(nproc)
+
+          %install
+          rm -rf %{buildroot}
+          %make_install
+
+          install -d %{buildroot}/usr/bin
+          install -d %{buildroot}/usr/lib64
+
+          ln -sf ../openssl4/bin/openssl %{buildroot}/usr/bin/openssl4
+          ln -sf ../openssl4/lib64/libssl.so %{buildroot}/usr/lib64/libssl.so.4
+          ln -sf ../openssl4/lib64/libcrypto.so %{buildroot}/usr/lib64/libcrypto.so.4
+
+          %files
+          /usr/bin/openssl4
+          /usr/lib64/libssl.so.4
+          /usr/lib64/libcrypto.so.4
+          /usr/openssl4
+
+          %post -p /sbin/ldconfig
+          %postun -p /sbin/ldconfig
+          SPECEOF
+
+          # Сборка RPM
+          cd "${BUILD_ROOT}/SPECS"
+          rpmbuild -ba --define "version ${VERSION}" openssl4.spec
+          cd -
+
+          # Копирование RPM в distr
+          find "${BUILD_ROOT}/RPMS" -name "*.rpm" -exec cp {} "${DISTR_DIR}/" \;
+
+          echo "Сборка завершена! Собраны RPM пакеты:"
+          echo "Build complete! RPM packages:"
+          find "${DISTR_DIR}" -name "*.rpm" -exec basename {} \;
+
+          # SHA256 для собранных артефактов
+          cd "$DISTR_DIR"
+          sha256sum *.rpm > SHA256SUMS
+          cd -
+          cat "$DISTR_DIR/SHA256SUMS"
+
+      - name: Публикация релиза | Upload to GitHub Releases
+        if: steps.detect.outputs.should_build == 'true'
+        env:
+          VERSION: ${{ steps.detect.outputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          DISTR_DIR="/distr"
+          REPO="$GITHUB_REPOSITORY"
+
+          RHEL_VER=$(rpm --eval '%{rhel}')
+
+          # Формируем тело релиза
+          RELEASE_BODY=$(cat << EOFBODY
+          Сборка [OpenSSL ${VERSION}](https://github.com/openssl/openssl/releases/tag/openssl-${VERSION}) для CentOS/RHEL ${RHEL_VER}.
+
+          RPM-пакет устанавливается **параллельно** с системным OpenSSL — в `/usr/openssl4`.
+          Подробности: [README](https://github.com/${REPO}#openssl-${VERSION//./}).
+
+          \`\`\`
+          $(cat "${DISTR_DIR}/SHA256SUMS")
+          \`\`\`
+          EOFBODY
+          )
+
+          TAG="openssl-${VERSION}"
+
+          EXISTING=$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            "https://api.github.com/repos/${REPO}/releases/tags/${TAG}" || true)
+          RELEASE_ID=$(echo "$EXISTING" | jq -r '.id // empty')
+
+          if [ -z "$RELEASE_ID" ]; then
+            echo "Создаём новый релиз ${TAG}"
+            PAYLOAD=$(jq -n \
+              --arg tag "$TAG" \
+              --arg name "OpenSSL ${VERSION} for CentOS/RHEL" \
+              --arg body "$RELEASE_BODY" \
+              '{tag_name:$tag, name:$name, body:$body}')
+            RELEASE_ID=$(curl -fsSL -X POST \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "$PAYLOAD" \
+              "https://api.github.com/repos/${REPO}/releases" | jq -r '.id')
+          else
+            echo "Релиз ${TAG} уже существует (id=${RELEASE_ID}), обновляем артефакты"
+          fi
+
+          ASSETS=$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            "https://api.github.com/repos/${REPO}/releases/${RELEASE_ID}/assets")
+
+          for f in "${DISTR_DIR}"/*.rpm "${DISTR_DIR}/SHA256SUMS"; do
+            NAME=$(basename "$f")
+            ASSET_ID=$(echo "$ASSETS" | jq -r --arg n "$NAME" '.[] | select(.name==$n) | .id' | head -1)
+            if [ -n "$ASSET_ID" ]; then
+              echo "Удаляем старый артефакт ${NAME} (id=${ASSET_ID})"
+              curl -fsSL -X DELETE \
+                -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+                "https://api.github.com/repos/${REPO}/releases/assets/${ASSET_ID}" || true
+            fi
+            echo "Загружаем ${NAME}"
+            curl -fsSL -X POST \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Content-Type: application/octet-stream" \
+              --data-binary "@${f}" \
+              "https://uploads.github.com/repos/${REPO}/releases/${RELEASE_ID}/assets?name=${NAME}"
+          done
+
+          echo "Готово: https://github.com/${REPO}/releases/tag/${TAG}"
