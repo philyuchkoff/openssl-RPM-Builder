@@ -41,6 +41,7 @@ jobs:
         env:
           INPUT_VERSION: ${{ github.event.inputs.version || '' }}
           INPUT_FORCE: ${{ github.event.inputs.force || 'false' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
 
@@ -49,10 +50,12 @@ jobs:
             VERSION="$INPUT_VERSION"
             echo "Ручная сборка версии: $VERSION (Manual build)"
           else
-            VERSION=$(curl -fsSL https://api.github.com/repos/openssl/openssl/releases/latest \
-              | jq -r '.tag_name' | sed 's/^openssl-//')
-            CURRENT=$(curl -fsSL https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest \
-              | jq -r '.tag_name' | sed 's/^openssl-//' || true)
+          VERSION=$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            https://api.github.com/repos/openssl/openssl/releases/latest \
+            | jq -r '.tag_name' | sed 's/^openssl-//')
+          CURRENT=$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest \
+            | jq -r '.tag_name' | sed 's/^openssl-//' || true)
             if [ -z "$CURRENT" ] || [ "$CURRENT" = "null" ]; then
               CURRENT=""
             fi
