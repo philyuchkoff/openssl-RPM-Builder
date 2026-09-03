@@ -4,7 +4,6 @@ set -euo pipefail
 VERSION="3.6.2"
 BUILD_ROOT="/root/rpmbuild"
 
-# Установка зависимостей
 echo "Installing dependencies..."
 dnf -y install \
     curl \
@@ -20,23 +19,18 @@ dnf -y install \
     ca-certificates \
     perl-libwww-perl
 
-# Удаление ненужных зависимостей
 dnf -y remove openssl || true
 
-# Подготовка окружения
 mkdir -p "${BUILD_ROOT}"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
-# Загрузка исходников
 echo "Downloading OpenSSL ${VERSION} source..."
 curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz" \
     -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz"
 
-# Загрузка файла с контрольной суммой
 echo "Downloading SHA256 checksum..."
 curl -sSfL "https://www.openssl.org/source/openssl-${VERSION}.tar.gz.sha256" \
     -o "${BUILD_ROOT}/SOURCES/openssl-${VERSION}.tar.gz.sha256"
 
-# Проверка контрольной суммы
 echo "Verifying SHA256 checksum..."
 cd "${BUILD_ROOT}/SOURCES"
 sha256sum -c openssl-${VERSION}.tar.gz.sha256
@@ -47,7 +41,6 @@ if [ $? -ne 0 ]; then
 fi
 echo "Checksum verification successful!"
 
-# Создание SPEC-файла
 cat << 'EOF' > "${BUILD_ROOT}/SPECS/openssl.spec"
 Summary: OpenSSL %{version} for CentOS/RHEL
 Name: openssl
@@ -62,7 +55,6 @@ License: Apache-2.0
 %define debug_package %{nil}
 Source0: openssl-%{version}.tar.gz
 
-# Зависимости
 BuildRequires: make gcc perl perl-IPC-Cmd zlib-devel perl-libwww-perl
 Requires: perl-libwww-perl
 
@@ -96,7 +88,6 @@ ln -sf ../openssl/lib64/libcrypto.so.3 %{buildroot}/usr/lib64/libcrypto.so.3
 %postun -p /sbin/ldconfig
 EOF
 
-# Сборка RPM
 cd "${BUILD_ROOT}/SPECS"
 rpmbuild -ba --define "version ${VERSION}" openssl.spec
 

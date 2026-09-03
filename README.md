@@ -9,9 +9,9 @@
 
 ---
 
-## Готовые RPM (рекомендуемый способ)
+## Pre-built RPMs (recommended)
 
-Готовые RPM-пакеты для CentOS/RHEL 8/9 доступны в [GitHub Releases](https://github.com/philyuchkoff/openssl-RPM-Builder/releases):
+Ready-to-use RPM packages for CentOS/RHEL 8/9 are available on [GitHub Releases](https://github.com/philyuchkoff/openssl-RPM-Builder/releases):
 
 ```bash
 VER=4.0.1
@@ -23,7 +23,7 @@ sudo rpm -ivh openssl4-${VER}-1.el8.x86_64.rpm
 
 # OpenSSL 4.x
 
-## Установка:
+## Build:
 
 ```bash
 sudo dnf -y groupinstall 'Development Tools'
@@ -33,24 +33,24 @@ chmod +x install-openssl_4.sh
 sudo ./install-openssl_4.sh
 ```
 
-Или через Makefile:
+Or via Makefile:
 ```bash
 sudo make install-4
 ```
 
-Собранный RPM:
+Built RPM location:
 
 ```
 /root/rpmbuild/RPMS/x86_64/
 ```
 
-После завершения скрипта:
+After the script finishes, install the RPM:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl4-4.0.1-1.el9.x86_64.rpm
+sudo rpm -ivh /root/rpmbuild/RPMS/x86_64/openssl4-4.0.1-1.el9.x86_64.rpm
 ```
 
-### Установка
+### Installation
 
 - System OpenSSL preserved (required by sudo, pam, etc.)
 - OpenSSL 4.x installed in parallel to `/usr/openssl4`
@@ -80,7 +80,7 @@ v4.0.1 [release page](https://github.com/openssl/openssl/releases/tag/openssl-4.
 
 # OpenSSL 3.x
 
-## Установка:
+## Build:
 
 ```bash
 sudo dnf -y groupinstall 'Development Tools'
@@ -90,16 +90,16 @@ chmod +x install-openssl_3.sh
 sudo ./install-openssl_3.sh
 ```
 
-Собранный RPM:
+Built RPM location:
 
 ```
 /root/rpmbuild/RPMS/x86_64/
 ```
 
-После завершения скрипта:
+After the script finishes, install the RPM:
 
 ```bash
-sudo rpm -ivvh /root/rpmbuild/RPMS/x86_64/openssl-3.6.2-1.el9.x86_64.rpm --nodeps
+sudo rpm -ivh /root/rpmbuild/RPMS/x86_64/openssl-3.6.2-1.el9.x86_64.rpm --nodeps
 ```
 
 v3.6.2 [release page](https://github.com/openssl/openssl/releases/tag/openssl-3.6.2)
