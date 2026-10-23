@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'OpenSSL version (e.g. 4.0.1). Empty = latest release'
+        description: 'OpenSSL version (e.g. 4.1.0). Empty = latest release'
         required: false
         default: ''
         type: string
@@ -19,22 +19,13 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: openssl-rpm-release
-  cancel-in-progress: false
-
 jobs:
-  build-and-release:
+  detect:
     runs-on: ubuntu-latest
-    container:
-      image: almalinux:8
-
+    outputs:
+      version: ${{ steps.detect.outputs.version }}
+      should_build: ${{ steps.detect.outputs.should_build }}
     steps:
-      - name: Install tools
-        run: |
-          dnf -y install epel-release
-          dnf -y install git jq curl rpm-build make gcc gcc-c++ perl perl-IPC-Cmd perl-Text-Template perl-Test-Simple zlib-devel ca-certificates perl-libwww-perl
-
       - name: Detect OpenSSL version
         id: detect
         env:
@@ -77,24 +68,40 @@ jobs:
           fi
           echo "should_build=$SHOULD_BUILD" >> "$GITHUB_OUTPUT"
 
-      - name: Skip (already built)
-        if: steps.detect.outputs.should_build == 'false'
+  build:
+    needs: detect
+    if: needs.detect.outputs.should_build == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - almalinux:8
+          - almalinux:9
+      fail-fast: false
+    container:
+      image: ${{ matrix.image }}
+    steps:
+      - name: Install tools
         run: |
-          echo "OpenSSL ${{ steps.detect.outputs.version }} is already released. Skipping."
+          if [ "$(rpm --eval '%{rhel}')" = "9" ]; then
+            dnf -y install 'dnf-command(config-manager)'
+            dnf config-manager --set-enabled crb
+          fi
+          dnf -y install epel-release
+          dnf -y install git jq curl rpm-build make gcc gcc-c++ perl perl-IPC-Cmd perl-Text-Template perl-Test-Simple zlib-devel ca-certificates perl-libwww-perl
 
       - name: Build OpenSSL RPM
-        if: steps.detect.outputs.should_build == 'true'
         env:
-          VERSION: ${{ steps.detect.outputs.version }}
+          VERSION: ${{ needs.detect.outputs.version }}
         run: |
           set -euo pipefail
 
           BUILD_ROOT="/tmp/rpmbuild"
-          DISTR_DIR="/distr"
           mkdir -p "$BUILD_ROOT"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-          mkdir -p "$DISTR_DIR"
 
-          echo "Building OpenSSL ${VERSION}..."
+          RHEL=$(rpm --eval '%{rhel}')
+
+          echo "Building OpenSSL ${VERSION} for RHEL ${RHEL}..."
 
           DOWNLOAD_SUCCESS=0
 
@@ -197,42 +204,70 @@ jobs:
             --define "version ${VERSION}" \
             "${BUILD_ROOT}/SPECS/openssl4.spec"
 
-          find "${BUILD_ROOT}/RPMS" -name "*.rpm" -exec cp {} "${DISTR_DIR}/" \;
+          find "${BUILD_ROOT}/RPMS" -name "*.rpm" -exec ls -lh {} \;
 
-          echo "Build complete! RPM packages:"
-          find "${DISTR_DIR}" -name "*.rpm" -exec basename {} \;
+          echo "Build for RHEL ${RHEL} complete!"
 
-          cd "$DISTR_DIR"
-          sha256sum *.rpm > SHA256SUMS
-          cd -
-          cat "$DISTR_DIR/SHA256SUMS"
+      - name: Collect artifacts
+        run: |
+          RHEL=$(rpm --eval '%{rhel}')
+          mkdir -p /tmp/dist
+          find /tmp/rpmbuild/RPMS -name "*.rpm" -exec cp {} /tmp/dist/ \;
+          cd /tmp/dist
+          sha256sum *.rpm > SHA256SUMS.el${RHEL}
+          echo "=== SHA256SUMS.el${RHEL} ==="
+          cat SHA256SUMS.el${RHEL}
 
-      - name: Upload to GitHub Releases
-        if: steps.detect.outputs.should_build == 'true'
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm-el${{ matrix.image == 'almalinux:8' && '8' || '9' }}
+          path: /tmp/dist/*
+          if-no-files-found: error
+
+  publish:
+    needs: [detect, build]
+    if: needs.detect.outputs.should_build == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: openssl-rpm-publish
+      cancel-in-progress: false
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: rpm-el*
+          path: /tmp/artifacts
+          merge-multiple: true
+
+      - name: Publish GitHub release
         env:
-          VERSION: ${{ steps.detect.outputs.version }}
+          VERSION: ${{ needs.detect.outputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
 
-          DISTR_DIR="/distr"
           REPO="$GITHUB_REPOSITORY"
+          TAG="openssl-${VERSION}"
 
-          RHEL_VER=$(rpm --eval '%{rhel}')
+          cd /tmp/artifacts
+          cat SHA256SUMS.el* > SHA256SUMS
+
+          echo "=== Artifacts ==="
+          ls -lh *.rpm
+          cat SHA256SUMS
 
           RELEASE_BODY=$(cat << EOFBODY
-          Build of [OpenSSL ${VERSION}](https://github.com/openssl/openssl/releases/tag/openssl-${VERSION}) for CentOS/RHEL ${RHEL_VER}.
+          Build of [OpenSSL ${VERSION}](https://github.com/openssl/openssl/releases/tag/openssl-${VERSION}) for CentOS/RHEL 8/9.
 
           The RPM package installs **alongside** the system OpenSSL — to \`/usr/openssl4\`.
           See [README](https://github.com/${REPO}#openssl-${VERSION//./}) for details.
 
           \`\`\`
-          $(cat "${DISTR_DIR}/SHA256SUMS")
+          $(sort SHA256SUMS)
           \`\`\`
           EOFBODY
           )
-
-          TAG="openssl-${VERSION}"
 
           EXISTING=$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" \
             "https://api.github.com/repos/${REPO}/releases/tags/${TAG}" || true)
@@ -257,7 +292,7 @@ jobs:
           ASSETS=$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" \
             "https://api.github.com/repos/${REPO}/releases/${RELEASE_ID}/assets")
 
-          for f in "${DISTR_DIR}"/*.rpm "${DISTR_DIR}/SHA256SUMS"; do
+          for f in *.rpm SHA256SUMS; do
             NAME=$(basename "$f")
             ASSET_ID=$(echo "$ASSETS" | jq -r --arg n "$NAME" '.[] | select(.name==$n) | .id' | head -1)
             if [ -n "$ASSET_ID" ]; then

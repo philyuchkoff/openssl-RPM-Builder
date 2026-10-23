@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-# OpenSSL 4.0.1 - official release from June 9, 2026
-# https://github.com/openssl/openssl/releases/tag/openssl-4.0.1
-VERSION="4.0.1"
+# OpenSSL 4.1.0
+# https://github.com/openssl/openssl/releases/tag/openssl-4.1.0
+VERSION="4.1.0"
 BUILD_ROOT="/root/rpmbuild"
 
 echo "Installing dependencies..."
@@ -79,7 +79,7 @@ fi
 cat << 'EOF' > "${BUILD_ROOT}/SPECS/openssl4.spec"
 Summary: OpenSSL %{version} for CentOS/RHEL (parallel installation)
 Name: openssl4
-Version: %{?version}%{!?version:4.0.1}
+Version: %{?version}%{!?version:4.1.0}
 Release: 1%{?dist}
 URL: https://www.openssl.org/
 License: Apache-2.0
@@ -139,21 +139,21 @@ echo "Build completed! RPM packages:"
 find "${BUILD_ROOT}/RPMS" -name "*.rpm"
 
 echo ""
-echo "=== OpenSSL 4.0.1 Installation Notes ==="
+echo "=== OpenSSL ${VERSION} Installation Notes ==="
 echo ""
 echo "✅ System OpenSSL was preserved (required by sudo, pam, etc.)"
-echo "✅ OpenSSL 4.0.1 installed in parallel to /usr/openssl4"
+echo "✅ OpenSSL ${VERSION} installed in parallel to /usr/openssl4"
 echo ""
-echo "To use OpenSSL 4.0.1:"
+echo "To use OpenSSL ${VERSION}:"
 echo "  /usr/bin/openssl4 version"
 echo ""
-echo "To compile against OpenSSL 4.0.1:"
+echo "To compile against OpenSSL ${VERSION}:"
 echo "  gcc -I/usr/openssl4/include -L/usr/openssl4/lib64 program.c -lssl -lcrypto"
 echo ""
 echo "To check library paths:"
 echo "  ldconfig -p | grep libssl"
 echo ""
-echo "=== Major changes in OpenSSL 4.x series (4.0.0 / 4.0.1) ==="
+echo "=== Major changes in OpenSSL 4.x series ==="
 echo "- Encrypted Client Hello (ECH) support (RFC 9849)"
 echo "- Post-quantum cryptography algorithms"
 echo "- ENGINE API removed (use providers instead)"

@@ -14,9 +14,10 @@
 Ready-to-use RPM packages for CentOS/RHEL 8/9 are available on [GitHub Releases](https://github.com/philyuchkoff/openssl-RPM-Builder/releases):
 
 ```bash
-VER=4.0.1
-wget https://github.com/philyuchkoff/openssl-RPM-Builder/releases/download/openssl-${VER}/openssl4-${VER}-1.el8.x86_64.rpm
-sudo rpm -ivh openssl4-${VER}-1.el8.x86_64.rpm
+VER=4.1.0
+RHEL=el8  # or el9
+wget https://github.com/philyuchkoff/openssl-RPM-Builder/releases/download/openssl-${VER}/openssl4-${VER}-1.${RHEL}.x86_64.rpm
+sudo rpm -ivh openssl4-${VER}-1.${RHEL}.x86_64.rpm
 ```
 
 ---
@@ -47,7 +48,7 @@ Built RPM location:
 After the script finishes, install the RPM:
 
 ```bash
-sudo rpm -ivh /root/rpmbuild/RPMS/x86_64/openssl4-4.0.1-1.el9.x86_64.rpm
+sudo rpm -ivh /root/rpmbuild/RPMS/x86_64/openssl4-4.1.0-1.el9.x86_64.rpm
 ```
 
 ### Installation
@@ -75,6 +76,7 @@ ldconfig -p | grep libssl
 
 v4.0.0 [release page](https://github.com/openssl/openssl/releases/tag/openssl-4.0.0)
 v4.0.1 [release page](https://github.com/openssl/openssl/releases/tag/openssl-4.0.1)
+v4.1.0 [release page](https://github.com/openssl/openssl/releases/tag/openssl-4.1.0)
 
 ---
 
