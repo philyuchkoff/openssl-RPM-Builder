@@ -84,6 +84,7 @@ jobs:
       - name: Install tools
         run: |
           if [ "$(rpm --eval '%{rhel}')" = "9" ]; then
+            dnf -y swap curl-minimal curl
             dnf -y install 'dnf-command(config-manager)'
             dnf config-manager --set-enabled crb
           fi
